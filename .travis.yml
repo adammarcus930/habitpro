@@ -18,3 +18,15 @@ after_success:
   - docker push adammarcus930/habit-nginx
   - docker push adammarcus930/habit-server
   - docker push adammarcus930/habit-worker
+
+deploy:
+  provider: elasticbeanstalk
+  region: 'us-west-1'
+  app: 'habitpro'
+  env: 'Habitpro-env'
+  bucket_name: 'elasticbeanstalk-us-west-1-733563742558'
+  bucket_path: 'Habitpro'
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
