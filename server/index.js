@@ -25,17 +25,7 @@ pgClient.on("connect", () => {
     .catch((err) => console.log(err));
 });
 
-// Redis Client Setup
-const redis = require("redis");
-const redisClient = redis.createClient({
-  host: keys.redisHost,
-  port: keys.redisPort,
-  retry_strategy: () => 1000,
-});
-const redisPublisher = redisClient.duplicate();
-
 // Express Route Handlers
-
 app.get("/", (req, res) => {
   res.send("Hi");
 });
@@ -47,7 +37,7 @@ app.get("/values/all", async (req, res) => {
 });
 
 app.get("/values/current", async (req, res) => {
-  redisClient.hgetall("values", (err, values) => {
+  Client.hgetall("values", (err, values) => {
     res.send(values);
   });
 });
@@ -59,8 +49,8 @@ app.post("/values", async (req, res) => {
     return res.status(422).send("Index out of range");
   }
 
-  redisClient.hset("values", index, "Nothing yet!");
-  redisPublisher.publish("insert", index);
+  Client.hset("values", index, "Nothing yet!");
+  Publisher.publish("insert", index);
   pgClient.query("INSERT INTO values(number) VALUES ($1)", [index]);
 
   res.send({ working: true });

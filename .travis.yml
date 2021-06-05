@@ -13,12 +13,10 @@ after_success:
   - docker build -t adammarcus930/habit-client ./client
   - docker build -t adammarcus930/habit-nginx ./nginx
   - docker build -t adammarcus930/habit-server ./server
-  - docker build -t adammarcus930/habit-worker ./worker
   - echo "$DOCKER_PASS" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push adammarcus930/habit-client
   - docker push adammarcus930/habit-nginx
   - docker push adammarcus930/habit-server
-  - docker push adammarcus930/habit-worker
 
 deploy:
   provider: elasticbeanstalk
