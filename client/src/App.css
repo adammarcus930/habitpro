@@ -14,11 +14,18 @@ html,
 }
 
 .todo-form {
-  padding-top: 15px;
+  padding-top: 33px;
   display: flex;
   flex-direction: row;
   align-items: left;
 }
+
+.divider {
+  display: flex;
+  flex-direction: column;
+  width: 33%;
+}
+
 li {
   text-align: initial;
 }

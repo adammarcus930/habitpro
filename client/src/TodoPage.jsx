@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
 import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
 
 export default () => {
   const LOCAL_STORAGE_KEY = "react-todo-list-todos";
@@ -42,14 +43,21 @@ export default () => {
   }
 
   return (
+    <div>
     <div className="Todo">
-      <Typography variant="h1">Boner Boner!</Typography>
+      <Typography variant="h2">Tasks</Typography>
+    </div>
+    <div className="divider">
+      <Divider variant="middle"/>
+    </div>
+    <div className="Todo">
       <TodoForm addTodo={addTodo} />
       <TodoList
         todos={todos}
         toggleComplete={toggleComplete}
         removeTodo={removeTodo}
       />
+    </div>
     </div>
   );
 };
