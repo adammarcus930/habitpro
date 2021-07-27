@@ -2,8 +2,12 @@ version: "3"
 services:
   postgres:
     image: "postgres:latest"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=postgres_password
+    ports:
+      - "5430:5432"
   nginx:
     depends_on:
       - api

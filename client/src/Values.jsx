@@ -1,25 +1,49 @@
-import * as React from 'react';
+import React, { Component} from "react";
 import { DataGrid } from '@material-ui/data-grid';
+import axios from 'axios';
 
 
-export default function Values() {
+class Values extends Component {
+
+  state = {
+    values: [],
+  };
+
+  componentDidMount() {
+    this.fetchValues();
+  }
+
+  async fetchValues() {
+    let values = await axios.get('/api/values');
+    
+    values = await values.data.map((value)=>{
+      value.opportunity = value.target_score - value.current_score 
+      return value
+    })
+
+    this.setState({ values: values });
+  }
+
+  render () {
   return (
     <div style={{ height: 550, width: '99%' }}>
-      <DataGrid rows={rows} columns={columns} />
+      <DataGrid rows={this.state.values} columns={columns} />
     </div>
   );
+}
 }
 
 const columns = [
   { field: 'importance', headerName: 'Importance', width: 150,  editable: true },
   { field: 'value', headerName: 'Value', width: 200, editable: true },
-  { field: 'currentScore', headerName: 'Current Score', width: 200, editable: true },
-  { field: 'targetScore', headerName: 'Target Score', width: 200, editable: true },
+  { field: 'current_score', headerName: 'Current Score', width: 200, editable: true },
+  { field: 'target_score', headerName: 'Target Score', width: 200, editable: true },
   { field: 'description', headerName: 'Description', width: 250, editable: true },
-  { field: 'opporunity', headerName: 'Opportunity', width: 200, editable: true },
+  { field: 'opportunity', headerName: 'Opportunity', width: 200, editable: true },
   { field: 'habit', headerName: 'Habit', width: 200, editable: true },
 ];
 
+/*
 const rows = [
   {
     id: 1,
@@ -32,3 +56,5 @@ const rows = [
     habit: "meditate",
   }
 ];
+*/
+export default Values

@@ -3,7 +3,6 @@ const keys = require("./keys");
 // Express App Setup
 const express = require("express");
 const cors = require("cors");
-//const bodyParser = require("body-parser"); app.use(express.json()); use instead
 
 const app = express();
 app.use(cors());
@@ -19,41 +18,33 @@ const pgClient = new Pool({
   port: keys.pgPort,
 });
 
-pgClient.on("connect", () => {
-  pgClient
-    .query("CREATE TABLE IF NOT EXISTS values (number INT)")
-    .catch((err) => console.log(err));
-});
-
 // Express Route Handlers
 app.get("/", (req, res) => {
   res.send("Hi");
 });
 
-app.get("/values/all", async (req, res) => {
-  const values = await pgClient.query("SELECT * FROM values");
-
+app.get("/values", async (req, res) => {
+  const values = await pgClient.query("select * from values;");
   res.send(values.rows);
 });
 
-app.get("/values/current", async (req, res) => {
-  Client.hgetall("values", (err, values) => {
-    res.send(values);
-  });
-});
+app.post("/createvalues", async (req, res) => {
+  try {
+    const importance = req.body.importance;
+    const value = req.body.value;
+    const currentScore = req.body.current_score;
+    const targetScore = req.body.target_score;
+    const description = req.body.description;
+    const habit = req.body.habit;
 
-app.post("/values", async (req, res) => {
-  const index = req.body.index;
-
-  if (parseInt(index) > 40) {
-    return res.status(422).send("Index out of range");
+    await pgClient.query(
+      "insert into values( importance, value, current_score, target_score, description, habit)  values($1 ,$2, $3, $4, $5, $6);",
+      [importance, value, currentScore, targetScore, description, habit]
+    );
+    res.send(204);
+  } catch (e) {
+    res.send(e);
   }
-
-  Client.hset("values", index, "Nothing yet!");
-  Publisher.publish("insert", index);
-  pgClient.query("INSERT INTO values(number) VALUES ($1)", [index]);
-
-  res.send({ working: true });
 });
 
 app.listen(5000, (err) => {
