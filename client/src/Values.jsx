@@ -14,16 +14,19 @@ class Values extends Component {
   }
 
   async fetchValues() {
+    try {
     let values = await axios.get('/api/values');
     
     values = await values.data.map((value)=>{
       value.opportunity = value.target_score - value.current_score 
       return value
-    })
-
+    }) 
     this.setState({ values: values });
-  }
-
+   }
+    catch(e){
+        console.log(e)
+      }
+    }
   render () {
   return (
     <div style={{ height: 550, width: '99%' }}>
