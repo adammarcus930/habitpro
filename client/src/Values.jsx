@@ -26,7 +26,7 @@ class Values extends Component {
     catch(e){
         console.log(e)
       }
-    }
+    };
   render () {
   return (
     <div style={{ height: 550, width: '99%' }}>
@@ -46,18 +46,4 @@ const columns = [
   { field: 'habit', headerName: 'Habit', width: 200, editable: true },
 ];
 
-/*
-const rows = [
-  {
-    id: 1,
-    importance: 1,
-    value: "Cultivating a Family w/ Values",
-    currentScore: 60,
-    targetScore: 95,
-    description: "Ensuring happiest lives and pass down good core values",
-    opporunity: 35,
-    habit: "meditate",
-  }
-];
-*/
 export default Values
